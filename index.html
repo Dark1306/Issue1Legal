@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>TikTok Auth - Issue#1</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 60px auto; padding: 0 20px; text-align: center; color: #222; }
+  .box { background: #f4f4f4; border-radius: 12px; padding: 24px; margin-top: 24px; word-break: break-all; font-family: monospace; font-size: 15px; }
+  button { margin-top: 16px; padding: 12px 24px; font-size: 16px; border-radius: 8px; border: none; background: #FE2C55; color: white; cursor: pointer; }
+  .label { font-weight: bold; margin-top: 20px; color: #555; }
+</style>
+</head>
+<body>
+<h1>✅ Autorisation reçue</h1>
+<p>Copie le code ci-dessous et colle-le dans Discord avec la commande <code>!tiktok_authorize</code>.</p>
+
+<div class="label">Code :</div>
+<div class="box" id="code">—</div>
+<button onclick="copyCode()">📋 Copier le code</button>
+
+<div class="label">State (vérification) :</div>
+<div class="box" id="state">—</div>
+
+<p id="error" style="color: red; font-weight: bold;"></p>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const state = params.get('state');
+  const error = params.get('error');
+
+  if (code) {
+    document.getElementById('code').textContent = code;
+  } else {
+    document.getElementById('code').textContent = 'Aucun code trouvé dans l\'URL.';
+  }
+  document.getElementById('state').textContent = state || '—';
+
+  if (error) {
+    document.getElementById('error').textContent = 'Erreur TikTok : ' + error + ' — ' + (params.get('error_description') || '');
+  }
+
+  function copyCode() {
+    navigator.clipboard.writeText(code || '');
+    alert('Code copié !');
+  }
+</script>
+</body>
+</html>
